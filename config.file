@@ -1,0 +1,27 @@
+
+package com.sudheer.config;
+
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
+import io.awspring.cloud.ses.SimpleEmailServiceMailSender;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.MailSender;
+
+@Configuration
+public class MailConfig {
+
+ @Bean
+ public AmazonSimpleEmailService amazonSimpleEmailService() {
+ AmazonSimpleEmailService sesClient =
+ new AmazonSimpleEmailServiceClient(new InstanceProfileCredentialsProvider());
+ return sesClient;
+ }
+
+ @Bean
+ public MailSender mailSender(AmazonSimpleEmailService amazonSimpleEmailService) {
+ return new SimpleEmailServiceMailSender(amazonSimpleEmailService);
+ }
+}
+
